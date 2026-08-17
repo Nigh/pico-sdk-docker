@@ -1,12 +1,17 @@
 # pico-sdk-docker
 a docker version sdk for Raspberry Pi Pico
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/xianii/pico-sdk)](https://hub.docker.com/r/xianii/pico-sdk)
+[![Docker Image Version](https://img.shields.io/docker/v/xianii/pico-sdk?sort=semver)](https://hub.docker.com/r/xianii/pico-sdk)
+
+Image tags follow the official [pico-sdk](https://github.com/raspberrypi/pico-sdk) release (currently **2.3.0**). `latest` points at the same image. The image is for cross-compiling UF2 firmware only — no flash/debug tools.
+
 ## Usage
 
 First, you should pull the image.
 
 ```bash
-docker pull xianii/pico-sdk:latest
+docker pull xianii/pico-sdk:2.3.0
 ```
 
 Then, visit the [example project](https://github.com/Nigh/pico-docker-example) and follow the instructions.
@@ -20,9 +25,14 @@ Then, visit the [example project](https://github.com/Nigh/pico-docker-example) a
 The build uses [chsrc](https://github.com/RubyMetric/chsrc) to speed up apt. In case you want to specific a mirror, visit the chsrc repo for the avaliable mirror list.
 
 ```bash
-docker build -t pico-sdk --build-arg MIRROR=none .
+docker build -t xianii/pico-sdk:2.3.0 --build-arg MIRROR=none .
 ```
 
+To build a different official SDK release (picotool must have the same tag):
+
+```bash
+docker build -t xianii/pico-sdk:2.3.0 --build-arg PICO_SDK_VERSION=2.3.0 .
+```
 
 ## FQ
 
@@ -30,15 +40,7 @@ docker build -t pico-sdk --build-arg MIRROR=none .
 If you are in a region where access to the apt default source is slow, you can either speed test through `chsrc` or specify a source manually using the following parameters.
 ```bash
 # set apt source mirror with speedtest (default)
-docker build -t pico-sdk .
+docker build -t xianii/pico-sdk:2.3.0 .
 # specific a mirror
-docker build -t pico-sdk --build-arg MIRROR=ustc .
-```
-
-如果你所在的地区访问无法正常访问到GitHub，可以如同下面，使用参数`GITHUB_PROXY`指定一个镜像，这个参数会附加在GitHub的链接之前。  
-不过，由于`pico-sdk`引用了多个submodule，这个方式无法处理到，所以作用有限。  
-If GitHub is not available in your region, you can specify a mirror as below, using the `GITHUB_PROXY` parameter, which will be appended before the GitHub link.  
-However, since `pico-sdk` contains multiple submodules, which cannot be handled in this way, it is only of limited use.
-```bash
-docker build -t pico-sdk --build-arg MIRROR=ustc --build-arg GITHUB_PROXY=https://ghfast.top/ .
+docker build -t xianii/pico-sdk:2.3.0 --build-arg MIRROR=ustc .
 ```
